@@ -1,14 +1,28 @@
-from pyrogram import filters
-from pyrogram import Client as stark
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-from main import LOGGER, prefixes, AUTH_USERS
-from config import Config
+import requests
+import json
+import subprocess
+from pyrogram.types.messages_and_media import message
+import helper
+from pyromod import listen
+from pyrogram.types import Message
+import pyrogram
+import logging
+from pyrogram import Client, filters
+from subprocess import getstatusoutput
+import re
+from pyrogram.types import User, Message
 import os
-import sys
 
+import requests
+bot = Client(
+    "CW",
+    bot_token=os.environ.get("BOT_TOKEN"),
+    api_id=int(os.environ.get("API_ID")),
+    api_hash=os.environ.get("API_HASH")
+)
 
-@stark.on_message(filters.command(["start"]) & ~filters.edited)
-async def Start_msg(bot: stark , m: Message):
+@bot.on_message(filters.command(["start"]))
+async def start(bot, update):
     await bot.send_photo(
     m.chat.id,
     photo="https://telegra.ph/file/cef3ef6ee69126c23bfe3.jpg",
